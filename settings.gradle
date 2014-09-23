@@ -1,0 +1,11 @@
+def String[] modules = [
+        'core',
+        'repository',
+        'service',
+        'web'
+]
+
+
+include modules
+
+rootProject.name = "java-base"

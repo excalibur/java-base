@@ -1,0 +1,16 @@
+apply from: "${gradleScriptDir}/maven.gradle"
+
+description = "join framework rest module."
+
+
+dependencies {
+    compile project(":repository")
+
+
+    compile "com.fasterxml.jackson.core:jackson-databind:$jacksonVersion"
+
+    compile "joda-time:joda-time:$jodaVersion",
+    "org.hibernate:hibernate-validator:$hibernateValidatorVersion"
+
+
+}

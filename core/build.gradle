@@ -1,0 +1,84 @@
+apply from: "${gradleScriptDir}/maven.gradle"
+apply plugin: 'checkstyle'
+apply plugin: 'findbugs'
+apply plugin: 'pmd'
+
+// check.dependsOn 'checkstyle', 'findbugs', 'pmd'
+
+task checkstyle(type: Checkstyle) {
+    configFile = file("${rootProject.projectDir}/gradle/quality/checkstyle/checkstyle.xml")
+    source 'src'
+    include '**/*.java'
+    exclude '**/gen/**'
+
+    classpath = files()
+}
+
+task findbugs(type: FindBugs) {
+    ignoreFailures = true
+    effort = "max"
+    reportLevel = "high"
+    excludeFilter = new File("${rootProject.projectDir}/gradle/quality/findbugs/findbugs-filter.xml")
+    classes = files("$project.buildDir/intermediates/classes/")
+
+    source 'src'
+    include '**/*.java'
+    exclude '**/gen/**'
+
+    reports {
+        xml {
+            destination "$project.buildDir/reports/findbugs/findbugs.xml"
+            xml.withMessages true
+        }
+    }
+
+    classpath = files()
+}
+
+task pmd(type: Pmd) {
+    ruleSetFiles = files("${rootProject.projectDir}/gradle/quality/pmd/pmd-ruleset.xml")
+    ignoreFailures = true
+    ruleSets = ["basic", "braces", "strings"]
+
+    source 'src'
+    include '**/*.java'
+    exclude '**/gen/**'
+
+    reports {
+        xml.enabled = true
+        html.enabled = false
+    }
+}
+description = "join framework core module."
+
+dependencies {
+
+    // logging
+     compile "org.slf4j:slf4j-api:$slf4jVersion",
+        "org.slf4j:jcl-over-slf4j:$slf4jVersion"
+
+    compile "org.apache.logging.log4j:log4j-slf4j-impl:$log4jVersion"
+    runtime "org.apache.logging.log4j:log4j-core:$log4jVersion"
+
+    // Spring
+    compile "org.springframework:spring-aop:$springVersion"
+    compile "org.springframework:spring-core:$springVersion"
+    compile "org.springframework:spring-beans:$springVersion"
+    compile "org.springframework:spring-context:$springVersion"
+
+    compile("org.springframework:spring-webmvc:$springVersion", optional)
+    compile("org.springframework:spring-web:$springVersion", optional)
+
+    compile "org.projectlombok:lombok:1.12.4"
+
+    compile("joda-time:joda-time:$jodaVersion", optional)
+    compile("org.jadira.usertype:usertype.core:$userType", optional)
+    compile("org.apache.commons:commons-lang3:$commonLang", optional)
+    compile("commons-collections:commons-collections:$commonCollection", optional)
+
+    compile("org.springframework.data:spring-data-jpa:$springDataJpaVersion", optional)
+    compile("org.hibernate:hibernate-entitymanager:$hibernateVersion", optional)
+    compile("org.springframework.data:spring-data-redis:$springDataRedisVersion", optional)
+
+    compile "mysql:mysql-connector-java:$mysqlVersion", optional
+}

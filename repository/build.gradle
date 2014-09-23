@@ -1,0 +1,22 @@
+apply from: "${gradleScriptDir}/maven.gradle"
+
+description = "join framework dao module."
+
+dependencies {
+    compile project(":core")
+
+    compile("org.springframework.data:spring-data-jpa:$springDataJpaVersion", optional)
+    compile("org.hibernate:hibernate-entitymanager:$hibernateVersion", optional)
+    compile("org.springframework.data:spring-data-redis:$springDataRedisVersion", optional)
+
+    compile("com.fasterxml.jackson.core:jackson-databind:$jacksonVersion", optional)
+
+    compile("joda-time:joda-time:$jodaVersion", optional)
+    compile("org.jadira.usertype:usertype.core:$userType", optional)
+    compile("org.apache.commons:commons-lang3:$commonLang", optional)
+    compile("commons-collections:commons-collections:$commonCollection", optional)
+
+
+    // Testing
+    testCompile "mysql:mysql-connector-java:$mysqlVersion"
+}
