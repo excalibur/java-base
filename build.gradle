@@ -171,4 +171,5 @@ configure(rootProject) {
 }
 task wrapper(type: Wrapper) {
     gradleVersion = '2.1'
+    scriptFile = 'g' // 默认 gradlew ，也太长了吧
 }
